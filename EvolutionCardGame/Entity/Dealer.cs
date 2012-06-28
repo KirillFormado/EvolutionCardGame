@@ -49,15 +49,6 @@ namespace ShuHaRi.EvolutionCardGame.Entity
             {
                 player.Cards.AddRange(dictionary[player]);
             }
-
-            //foreach (var player in Players)
-            //{
-            //    var neededCardsCount = this.CalculateNumberOfNeedeCards(player);
-            //for (int i = 0; i < neededCardsCount; i++)
-            //{
-            //GetCardFromDeck(player);
-            //}               
-            //}
         }
 
         private void GetCardFromDeck(List<Card> cardList)
