@@ -62,9 +62,6 @@ namespace ShuHaRi.EvolutionCardGame.Entity
 
         private void GetCardFromDeck(List<Card> cardList)
         {
-            //if (this.cardsDeck.IsDeckEmpty())
-              //  return;
-
             cardList.Add(this.cardsDeck.Pop());    
         }
 
