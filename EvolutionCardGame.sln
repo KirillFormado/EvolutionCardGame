@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvolutionCardGame", "EvolutionCardGame\EvolutionCardGame.csproj", "{F485550C-4CAE-4C66-ABE1-9AA3649BD443}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvolutionCardGameTests", "EvolutionCardGameTests\EvolutionCardGameTests.csproj", "{9193ABCD-DAB2-47CB-B3B2-5AFF9BED04AD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F485550C-4CAE-4C66-ABE1-9AA3649BD443} = {F485550C-4CAE-4C66-ABE1-9AA3649BD443}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9193ABCD-DAB2-47CB-B3B2-5AFF9BED04AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9193ABCD-DAB2-47CB-B3B2-5AFF9BED04AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9193ABCD-DAB2-47CB-B3B2-5AFF9BED04AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9193ABCD-DAB2-47CB-B3B2-5AFF9BED04AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F485550C-4CAE-4C66-ABE1-9AA3649BD443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F485550C-4CAE-4C66-ABE1-9AA3649BD443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F485550C-4CAE-4C66-ABE1-9AA3649BD443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F485550C-4CAE-4C66-ABE1-9AA3649BD443}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
