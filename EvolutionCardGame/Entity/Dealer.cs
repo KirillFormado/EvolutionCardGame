@@ -6,10 +6,9 @@ namespace ShuHaRi.EvolutionCardGame.Entity
 {
     public class Dealer : IDealer
     {
-        private readonly int defaultCardsCount = 6;
+        private const int defaultCardsCount = 6;
         private readonly IEnumerable<Player> players;
-        private CardsDeck cardsDeck;
-        
+        private readonly CardsDeck cardsDeck;
 
         public IEnumerable<Player> Players
         {
@@ -60,7 +59,7 @@ namespace ShuHaRi.EvolutionCardGame.Entity
         {
             var playerCardsCount = player.Cards.Count;
             if (playerCardsCount == 0)
-                return this.defaultCardsCount;
+                return defaultCardsCount;
 
             if (playerCardsCount > 0)
                 return this.CardsCount(player.Animals.Count);

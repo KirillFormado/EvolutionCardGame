@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardsDeckTests.cs" />
-    <Compile Include="DealerTests.cs" />
+    <Compile Include="DealerDealCardsTests.cs" />
     <Compile Include="PlayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
