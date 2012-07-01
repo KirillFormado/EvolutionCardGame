@@ -58,6 +58,7 @@ namespace ShuHaRi.EvolutionCardGame.Entity
         private int CalculateNumberOfNeedeCards(Player player)
         {
             var playerCardsCount = player.Cards.Count;
+
             if (playerCardsCount == 0)
                 return defaultCardsCount;
 
