@@ -51,7 +51,7 @@ namespace ShuHaRi.EvolutionCardGameTests
         public void DealCardsIfPlayerHasNotCardsInHandAndDeckIsEmpty_AllPlayersHaveDoNotGetCards()
         {
             //Arrange
-            PrepareCardsDeckAndDealerEntities();
+            PrepareTestData(0);
 
             //Act
             dealer.DealCards();
@@ -99,24 +99,14 @@ namespace ShuHaRi.EvolutionCardGameTests
             PrepareTestData(cardsCount);
             //first delivery cards
             dealer.DealCards();
-
-            var players = dealer.Players;
-            int animalCount = 1;
-            foreach (var player in players)
-            {
-                for (int i = 0; i < animalCount; i++)
-                {
-                    player.Animals.Add(new Animal());
-                }
-                animalCount++;
-            }
+            GetPlayersAnimals();
 
             //Act
             dealer.DealCards();
 
             //Assert
-            players = dealer.Players;
-            animalCount = 1;
+            var players = dealer.Players;
+            var animalCount = 1;
             foreach (var player in players)
             {
                 for (int i = 0; i < animalCount; i++)
@@ -148,44 +138,23 @@ namespace ShuHaRi.EvolutionCardGameTests
             //Arrange
             int cardsCount = playersCount * 3;
             PrepareTestData(cardsCount);
-            //first delivery cards
-            dealer.DealCards();
-
-            var players = dealer.Players;
-            int animalCount = 1;
-            foreach (var player in players)
-            {
-                for (int i = 0; i < animalCount; i++)
-                {
-                    player.Animals.Add(new Animal());
-                }
-                animalCount++;
-            }
+            GetPlayersAnimals();
 
             //Act
             dealer.DealCards();
 
             //Assert
-            players = dealer.Players;
-            animalCount = 1;
-            foreach (var player in players)
-            {
-                for (int i = 0; i < animalCount; i++)
-                {
-                    Assert.AreEqual(3, player.Cards.Count);
-                }
-                animalCount++;
-            }
+            CardsCountAssert(3);
         }
 
         #endregion
 
-        #region Helper Methods
+        #region  Helper Methods
 
         private void PrepareTestData(int cardsCount)
         {
             FillCardsRepositoryMock(cardsCount);
-            PrepareCardsDeckAndDealerEntities();
+            InitDealerEntity();
         }
         
         private void FillCardsRepositoryMock(int cardsCount)
@@ -197,7 +166,21 @@ namespace ShuHaRi.EvolutionCardGameTests
             this.cardsRepositoryMock.Setup(c => c.GetCards()).Returns(cardsList);
         }
 
-        private void PrepareCardsDeckAndDealerEntities()
+        private void GetPlayersAnimals()
+        {
+            var players = dealer.Players;
+            int animalCount = 1;
+            foreach (var player in players)
+            {
+                for (int i = 0; i < animalCount; i++)
+                {
+                    player.Animals.Add(new Animal());
+                }
+                animalCount++;
+            }
+        }
+
+        private void InitDealerEntity()
         {
             this.cardsDeck = new CardsDeck(cardsRepositoryMock.Object);
             this.dealer = new Dealer(playersRepositoryMock.Object, cardsDeck);

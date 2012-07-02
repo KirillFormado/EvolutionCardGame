@@ -3,13 +3,5 @@ bin-debug/
 bin-release/
 
 # Project property files
-.actionScriptProperties
-.flexProperties
 .settings/
 .project
-/_ReSharper.EvolutionCardGame
-/_ReSharper.EvolutionCardGame
-/EvolutionCardGame/bin
-/EvolutionCardGameTests/bin
-/EvolutionCardGameTests/obj
-/EvolutionCardGame/obj

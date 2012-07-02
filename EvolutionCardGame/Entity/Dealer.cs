@@ -33,13 +33,18 @@ namespace ShuHaRi.EvolutionCardGame.Entity
             {
                 foreach (var player in this.Players)
                 {
-                    if (!this.cardsDeck.IsDeckEmpty() && dictionary[player].Count < this.CalculateNumberOfNeedeCards(player))
+                    if (playerList.Contains(player))
                     {
-                        GetCardFromDeck(dictionary[player]);
-                    }
-                    else
-                    {
-                        playerList.Remove(player);
+                        var cardsList = dictionary[player];
+                        if (!this.cardsDeck.IsDeckEmpty()
+                            && cardsList.Count < this.CalculateNumberOfNeedeCards(player))
+                        {
+                            GetCardFromDeck(cardsList);
+                        }
+                        else
+                        {
+                            playerList.Remove(player);
+                        }
                     }
                 }
             }
@@ -63,16 +68,14 @@ namespace ShuHaRi.EvolutionCardGame.Entity
                 return defaultCardsCount;
 
             if (playerCardsCount > 0)
-                return this.CardsCount(player.Animals.Count);
+                return this.CardsCountRule(player.Animals.Count);
 
             return 0;
         }
 
-        private int CardsCount(int animalsCount)
+        private int CardsCountRule(int animalsCount)
         {
             return animalsCount + 1;
         }
-
-
     }
 }
