@@ -7,6 +7,7 @@ namespace ShuHaRi.EvolutionCardGame.Entity
     public class Dealer : IDealer
     {
         private const int defaultCardsCount = 6;
+        private const int bonus = 1;
         private readonly IEnumerable<Player> players;
         private readonly CardsDeck cardsDeck;
 
@@ -77,7 +78,7 @@ namespace ShuHaRi.EvolutionCardGame.Entity
 
         private int CardsCountRule(int animalsCount)
         {
-            return animalsCount + 1;
+            return animalsCount + bonus;
         }
     }
 }

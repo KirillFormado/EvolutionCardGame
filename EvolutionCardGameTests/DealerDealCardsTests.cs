@@ -10,37 +10,12 @@ namespace ShuHaRi.EvolutionCardGameTests
     [TestFixture]
     public class DealerDealCardsTests
     {
-
         #region Fields
-
-        private Mock<IPlayersRepository> playersRepositoryMock;
-        private Mock<ICardsRepository> cardsRepositoryMock;
-
-        private Dealer dealer;
 
         private const int playersCount = 3;
         private const int defaultCardsCount = 6;
+        private const int bonus = 1;
         private const int fullDeck = 60;
-
-        #endregion
-
-        #region SetUp
-
-        [SetUp]
-        public void SetUp()
-        {
-            //Arrange
-            var listPlayer = new List<Player>();
-            for (int i = 0; i < playersCount; i++)
-			    listPlayer.Add(new Player());     
-
-            this.playersRepositoryMock = new Mock<IPlayersRepository>();
-            this.playersRepositoryMock
-                .Setup(p => p.GetPlayers())
-                .Returns(listPlayer);
-                    
-            this.cardsRepositoryMock = new Mock<ICardsRepository>();
-        }
 
         #endregion
 
@@ -50,13 +25,13 @@ namespace ShuHaRi.EvolutionCardGameTests
         public void DealCardsIfPlayerHasNotCardsInHandAndDeckIsEmpty_AllPlayersHaveDoNotGetCards()
         {
             //Arrange
-            InitDealerEntity(0);
+            var dealer = this.BuildDealer(0);
 
             //Act
             dealer.DealCards();
 
             //Assert
-            CardsCountAssert(0);
+            CardsCountAssert(0, dealer);
         }
 
         [Test]
@@ -64,13 +39,13 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = defaultCardsCount * playersCount;
-            InitDealerEntity(cardsCount);
+            var dealer = this.BuildDealer(cardsCount);
 
             //Act
             dealer.DealCards();
 
             //Assert
-            CardsCountAssert(defaultCardsCount);
+            CardsCountAssert(defaultCardsCount, dealer);
         }
 
         [Test]
@@ -78,7 +53,7 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = fullDeck;
-            InitDealerEntity(cardsCount);
+            var dealer = this.BuildDealer(cardsCount);
             //first delivery cards
             dealer.DealCards();
 
@@ -87,18 +62,18 @@ namespace ShuHaRi.EvolutionCardGameTests
             
             //Assert
             int expected = defaultCardsCount + 1;
-            CardsCountAssert(expected);
+            CardsCountAssert(expected, dealer);
         }
 
         [Test]
-        public void DealCardIfPlayerHasCardsAndHasAnimals_AllPlayersWillHaveDefaultCardsCountPlusOneCardPlusCountOfAnimalsOnHand()
+        public void DealCardIfPlayerHasCardsAndHasAnimals_AllPlayersWillHaveDefaultCardsCountPlusBonusPlusCountOfAnimalsOnHand()
         {
             //Arrange
             int cardsCount = fullDeck;
-            InitDealerEntity(cardsCount);
+            var dealer = this.BuildDealer(cardsCount);
             //first delivery cards
             dealer.DealCards();
-            GetPlayersAnimals();
+            BuildPlayersWithAnimals(dealer);
 
             //Act
             dealer.DealCards();
@@ -110,7 +85,7 @@ namespace ShuHaRi.EvolutionCardGameTests
             {
                 for (int i = 0; i < animalCount; i++)
                 {
-                    int expected = defaultCardsCount + 1 + animalCount;
+                    int expected = defaultCardsCount + bonus + animalCount;
                     Assert.AreEqual(expected, player.Cards.Count);
                 }
                 animalCount++;
@@ -122,45 +97,72 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             var cardsCount = playersCount;
-            this.InitDealerEntity(cardsCount);
+            var dealer = this.BuildDealer(cardsCount);
 
             //Act
             dealer.DealCards();
 
             //Assert
-            CardsCountAssert(1);
+            CardsCountAssert(1, dealer);
         }
 
+        [Ignore("Temp Ignore")]
         [Test]
-        public void DealCardsPlayersHaveAnimals_()
+        public void DealCardsPlayersHaveAnimals_Return()
         {
             //Arrange
             int cardsCount = playersCount * 3;
-            InitDealerEntity(cardsCount);
-            GetPlayersAnimals();
+            var dealer = this.BuildDealer(cardsCount);
+            BuildPlayersWithAnimals(dealer);
 
             //Act
             dealer.DealCards();
 
             //Assert
-            CardsCountAssert(3);
+            CardsCountAssert(3, dealer);
         }
 
         #endregion
 
-        #region  Helper Methods
-        
-        private void InitDealerEntity(int cardsCount)
+        #region  Build Methods
+
+        private IPlayersRepository BuildPlayersRepository()
         {
+            var listPlayer = new List<Player>();
+            for (int i = 0; i < playersCount; i++)
+                listPlayer.Add(new Player());
+
+            var playersRepositoryMock = new Mock<IPlayersRepository>();
+            playersRepositoryMock
+                .Setup(p => p.GetPlayers())
+                .Returns(listPlayer);
+
+            return playersRepositoryMock.Object;
+        }
+
+        private ICardsRepository BuildCardsRepository(int cardsCount)
+        {
+            var cardsRepositoryMock = new Mock<ICardsRepository>();
             var cardsList = new List<Card>();
             for (int i = 0; i < cardsCount; i++)
                 cardsList.Add(new Card());
 
-            this.cardsRepositoryMock.Setup(c => c.GetCards()).Returns(cardsList);
-            this.dealer = new Dealer(playersRepositoryMock.Object, cardsRepositoryMock.Object);
+            cardsRepositoryMock.Setup(c => c.GetCards()).Returns(cardsList);
+
+            return cardsRepositoryMock.Object;
+        }
+        
+        private Dealer BuildDealer(int cardsCount)
+        {
+            var playersRepositoryMock = this.BuildPlayersRepository();
+            var cardsRepositoryMock = this.BuildCardsRepository(cardsCount);
+
+            var dealer = new Dealer(playersRepositoryMock, cardsRepositoryMock);
+
+            return dealer;
         }
 
-        private void GetPlayersAnimals()
+        private void BuildPlayersWithAnimals(Dealer dealer)
         {
             var players = dealer.Players;
             int animalCount = 1;
@@ -174,11 +176,15 @@ namespace ShuHaRi.EvolutionCardGameTests
             }
         }
 
-        private void CardsCountAssert(int expectedCards)
+        #endregion
+
+        #region Assert Methods
+
+        private void CardsCountAssert(int expectedCards, Dealer dealer)
         {
             var players = dealer.Players;
             foreach (var player in players)
-                Assert.AreEqual(expectedCards, player.Cards.Count);    
+                Assert.AreEqual(expectedCards, player.Cards.Count);
         }
 
         #endregion
