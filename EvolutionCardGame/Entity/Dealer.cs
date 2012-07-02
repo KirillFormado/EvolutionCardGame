@@ -18,15 +18,17 @@ namespace ShuHaRi.EvolutionCardGame.Entity
             }
         }
 
-        public Dealer(IPlayersRepository playersRepository, CardsDeck cardsDeck)
+        public Dealer(IPlayersRepository playersRepository, ICardsRepository cardsRepository)
         {
             this.players = playersRepository.GetPlayers();
-            this.cardsDeck = cardsDeck;
+            this.cardsDeck = new CardsDeck(cardsRepository);
         }
 
         public void DealCards()
         {
+            //Need to collect cards for each player
             var dictionary = this.Players.ToDictionary(player => player, player => new List<Card>());
+            //Need to observe when players get all needed cards
             var playerList = new List<Player>(Players);
 
             while (playerList.Count > 0)
@@ -49,7 +51,7 @@ namespace ShuHaRi.EvolutionCardGame.Entity
                 }
             }
 
-            foreach (var player in players)
+            foreach (var player in this.Players)
             {
                 player.Cards.AddRange(dictionary[player]);
             }

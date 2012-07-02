@@ -16,7 +16,6 @@ namespace ShuHaRi.EvolutionCardGameTests
         private Mock<IPlayersRepository> playersRepositoryMock;
         private Mock<ICardsRepository> cardsRepositoryMock;
 
-        private CardsDeck cardsDeck;
         private Dealer dealer;
 
         private const int playersCount = 3;
@@ -51,7 +50,7 @@ namespace ShuHaRi.EvolutionCardGameTests
         public void DealCardsIfPlayerHasNotCardsInHandAndDeckIsEmpty_AllPlayersHaveDoNotGetCards()
         {
             //Arrange
-            PrepareTestData(0);
+            InitDealerEntity(0);
 
             //Act
             dealer.DealCards();
@@ -65,7 +64,7 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = defaultCardsCount * playersCount;
-            PrepareTestData(cardsCount);
+            InitDealerEntity(cardsCount);
 
             //Act
             dealer.DealCards();
@@ -79,7 +78,7 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = fullDeck;
-            PrepareTestData(cardsCount);
+            InitDealerEntity(cardsCount);
             //first delivery cards
             dealer.DealCards();
 
@@ -96,7 +95,7 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = fullDeck;
-            PrepareTestData(cardsCount);
+            InitDealerEntity(cardsCount);
             //first delivery cards
             dealer.DealCards();
             GetPlayersAnimals();
@@ -123,7 +122,7 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             var cardsCount = playersCount;
-            this.PrepareTestData(cardsCount);
+            this.InitDealerEntity(cardsCount);
 
             //Act
             dealer.DealCards();
@@ -137,7 +136,7 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = playersCount * 3;
-            PrepareTestData(cardsCount);
+            InitDealerEntity(cardsCount);
             GetPlayersAnimals();
 
             //Act
@@ -150,20 +149,15 @@ namespace ShuHaRi.EvolutionCardGameTests
         #endregion
 
         #region  Helper Methods
-
-        private void PrepareTestData(int cardsCount)
-        {
-            FillCardsRepositoryMock(cardsCount);
-            InitDealerEntity();
-        }
         
-        private void FillCardsRepositoryMock(int cardsCount)
+        private void InitDealerEntity(int cardsCount)
         {
             var cardsList = new List<Card>();
             for (int i = 0; i < cardsCount; i++)
                 cardsList.Add(new Card());
 
             this.cardsRepositoryMock.Setup(c => c.GetCards()).Returns(cardsList);
+            this.dealer = new Dealer(playersRepositoryMock.Object, cardsRepositoryMock.Object);
         }
 
         private void GetPlayersAnimals()
@@ -178,12 +172,6 @@ namespace ShuHaRi.EvolutionCardGameTests
                 }
                 animalCount++;
             }
-        }
-
-        private void InitDealerEntity()
-        {
-            this.cardsDeck = new CardsDeck(cardsRepositoryMock.Object);
-            this.dealer = new Dealer(playersRepositoryMock.Object, cardsDeck);
         }
 
         private void CardsCountAssert(int expectedCards)
