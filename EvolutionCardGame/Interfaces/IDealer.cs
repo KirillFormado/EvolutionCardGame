@@ -8,6 +8,6 @@ namespace ShuHaRi.EvolutionCardGame.Interfaces
 {
     interface IDealer
     {
-        void DealCards();
+        void DealCards(ICardsDeck cardsDeck);
     }
 }

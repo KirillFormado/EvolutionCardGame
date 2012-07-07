@@ -9,7 +9,6 @@ namespace ShuHaRi.EvolutionCardGame.Entity
         private const int defaultCardsCount = 6;
         private const int bonus = 1;
         private readonly IEnumerable<Player> players;
-        private readonly CardsDeck cardsDeck;
 
         public IEnumerable<Player> Players
         {
@@ -19,13 +18,12 @@ namespace ShuHaRi.EvolutionCardGame.Entity
             }
         }
 
-        public Dealer(IPlayersRepository playersRepository, ICardsRepository cardsRepository)
+        public Dealer(IPlayersRepository playersRepository)
         {
             this.players = playersRepository.GetPlayers();
-            this.cardsDeck = new CardsDeck(cardsRepository);
         }
 
-        public void DealCards()
+        public void DealCards(ICardsDeck cardsDeck)
         {
             //Need to collect cards for each player
             var dictionary = this.Players.ToDictionary(player => player, player => new List<Card>());
@@ -39,10 +37,10 @@ namespace ShuHaRi.EvolutionCardGame.Entity
                     if (playerList.Contains(player))
                     {
                         var cardsList = dictionary[player];
-                        if (!this.cardsDeck.IsDeckEmpty()
+                        if (!cardsDeck.IsDeckEmpty()
                             && cardsList.Count < this.CalculateNumberOfNeedeCards(player))
                         {
-                            GetCardFromDeck(cardsList);
+                            GetCardFromDeck(cardsList, cardsDeck);
                         }
                         else
                         {
@@ -58,9 +56,9 @@ namespace ShuHaRi.EvolutionCardGame.Entity
             }
         }
 
-        private void GetCardFromDeck(List<Card> cardList)
+        private void GetCardFromDeck(List<Card> cardList, ICardsDeck cardsDeck)
         {
-            cardList.Add(this.cardsDeck.Pop());    
+            cardList.Add(cardsDeck.Pop());    
         }
 
         private int CalculateNumberOfNeedeCards(Player player)

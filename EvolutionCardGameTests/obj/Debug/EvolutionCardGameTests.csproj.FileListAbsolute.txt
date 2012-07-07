@@ -8,3 +8,13 @@ C:\Users\Kirill\Documents\_WORK\EvolutionCardGame\EvolutionCardGameTests\obj\Deb
 C:\Users\Kirill\Documents\_WORK\EvolutionCardGame\EvolutionCardGameTests\obj\Debug\EvolutionCardGameTests.pdb
 C:\Users\Kirill\Documents\_WORK\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\Moq.pdb
 C:\Users\Kirill\Documents\_WORK\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\Moq.xml
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\EvolutionCardGameTests.dll
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\EvolutionCardGameTests.pdb
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\EvolutionCardGame.dll
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\EvolutionCardGame.pdb
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\Moq.pdb
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\Moq.xml
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\bin\Debug\nunit.framework.xml
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\obj\Debug\EvolutionCardGameTests.csprojResolveAssemblyReference.cache
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\obj\Debug\EvolutionCardGameTests.dll
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGameTests\obj\Debug\EvolutionCardGameTests.pdb

@@ -7,7 +7,7 @@ using ShuHaRi.EvolutionCardGame.Interfaces;
 
 namespace ShuHaRi.EvolutionCardGame.Entity
 {
-    public class CardsDeck
+    public class CardsDeck : ICardsDeck
     {
         private readonly Stack<Card> cardsRepository;
 

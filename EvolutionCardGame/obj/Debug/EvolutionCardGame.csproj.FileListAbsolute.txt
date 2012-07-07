@@ -3,3 +3,8 @@ C:\Users\Kirill\Documents\_WORK\EvolutionCardGame\EvolutionCardGame\bin\Debug\Ev
 C:\Users\Kirill\Documents\_WORK\EvolutionCardGame\EvolutionCardGame\obj\Debug\EvolutionCardGame.csprojResolveAssemblyReference.cache
 C:\Users\Kirill\Documents\_WORK\EvolutionCardGame\EvolutionCardGame\obj\Debug\EvolutionCardGame.dll
 C:\Users\Kirill\Documents\_WORK\EvolutionCardGame\EvolutionCardGame\obj\Debug\EvolutionCardGame.pdb
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGame\bin\Debug\EvolutionCardGame.dll
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGame\bin\Debug\EvolutionCardGame.pdb
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGame\obj\Debug\EvolutionCardGame.csprojResolveAssemblyReference.cache
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGame\obj\Debug\EvolutionCardGame.dll
+C:\Users\Kirill\Documents\__Projects__\EvolutionCardGame\EvolutionCardGame\obj\Debug\EvolutionCardGame.pdb

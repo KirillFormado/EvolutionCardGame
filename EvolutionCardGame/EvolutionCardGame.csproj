@@ -43,6 +43,7 @@
     <Compile Include="Entity\Card.cs" />
     <Compile Include="Entity\CardsDeck.cs" />
     <Compile Include="Entity\Dealer.cs" />
+    <Compile Include="Interfaces\ICardsDeck.cs" />
     <Compile Include="Entity\Player.cs" />
     <Compile Include="Interfaces\CardsRepository.cs" />
     <Compile Include="Interfaces\IDealer.cs" />

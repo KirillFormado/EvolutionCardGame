@@ -25,13 +25,15 @@ namespace ShuHaRi.EvolutionCardGameTests
         public void DealCardsIfPlayerHasNotCardsInHandAndDeckIsEmpty_AllPlayersHaveDoNotGetCards()
         {
             //Arrange
-            var dealer = this.BuildDealer(0);
+            var dealer = this.BuildDealer();
+            var cardsDeck = this.BuildCardsDeck(0);
 
             //Act
-            dealer.DealCards();
+            dealer.DealCards(cardsDeck);
 
             //Assert
-            CardsCountAssert(0, dealer);
+            PlayersCardsCountAssert(0, dealer);
+            CardsDeckCardsCountAssert(0, cardsDeck);
         }
 
         [Test]
@@ -39,13 +41,15 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = defaultCardsCount * playersCount;
-            var dealer = this.BuildDealer(cardsCount);
+            var dealer = this.BuildDealer();
+            var cardsDeck = this.BuildCardsDeck(cardsCount);
 
             //Act
-            dealer.DealCards();
+            dealer.DealCards(cardsDeck);
 
             //Assert
-            CardsCountAssert(defaultCardsCount, dealer);
+            PlayersCardsCountAssert(defaultCardsCount, dealer);
+            CardsDeckCardsCountAssert(0, cardsDeck);
         }
 
         [Test]
@@ -53,16 +57,19 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = fullDeck;
-            var dealer = this.BuildDealer(cardsCount);
+            var dealer = this.BuildDealer();
+            var cardsDeck = this.BuildCardsDeck(cardsCount);
             //first delivery cards
-            dealer.DealCards();
+            dealer.DealCards(cardsDeck);
 
             //Act
-            dealer.DealCards();
+            dealer.DealCards(cardsDeck);
             
             //Assert
-            int expected = defaultCardsCount + 1;
-            CardsCountAssert(expected, dealer);
+            int expectedPlayersCards = defaultCardsCount + 1;
+            PlayersCardsCountAssert(expectedPlayersCards, dealer);
+            int expectedCards = fullDeck - defaultCardsCount * playersCount - playersCount;
+            CardsDeckCardsCountAssert(expectedCards, cardsDeck);
         }
 
         [Test]
@@ -70,17 +77,19 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             int cardsCount = fullDeck;
-            var dealer = this.BuildDealer(cardsCount);
+            var dealer = this.BuildDealer();
+            var cardsDeck = this.BuildCardsDeck(cardsCount);
             //first delivery cards
-            dealer.DealCards();
+            dealer.DealCards(cardsDeck);
             BuildPlayersWithAnimals(dealer);
 
             //Act
-            dealer.DealCards();
+            dealer.DealCards(cardsDeck);
 
             //Assert
             var players = dealer.Players;
-            var animalCount = 1;
+            int animalCount = 1;
+            int expectedAnimalsCount = 0;
             foreach (var player in players)
             {
                 for (int i = 0; i < animalCount; i++)
@@ -88,8 +97,13 @@ namespace ShuHaRi.EvolutionCardGameTests
                     int expected = defaultCardsCount + bonus + animalCount;
                     Assert.AreEqual(expected, player.Cards.Count);
                 }
+                expectedAnimalsCount += animalCount;
                 animalCount++;
             }
+
+            int expectedCardsCount = cardsCount - defaultCardsCount*playersCount - expectedAnimalsCount - playersCount;
+
+            CardsDeckCardsCountAssert(expectedCardsCount, cardsDeck);
         }
 
         [Test]
@@ -97,31 +111,17 @@ namespace ShuHaRi.EvolutionCardGameTests
         {
             //Arrange
             var cardsCount = playersCount;
-            var dealer = this.BuildDealer(cardsCount);
+            var dealer = this.BuildDealer();
+            var cardsDeck = this.BuildCardsDeck(cardsCount);
 
             //Act
-            dealer.DealCards();
+            dealer.DealCards(cardsDeck);
 
             //Assert
-            CardsCountAssert(1, dealer);
+            PlayersCardsCountAssert(1, dealer);
+            CardsDeckCardsCountAssert(0, cardsDeck);
         }
-
-        [Ignore("Temp Ignore")]
-        [Test]
-        public void DealCardsPlayersHaveAnimals_Return()
-        {
-            //Arrange
-            int cardsCount = playersCount * 3;
-            var dealer = this.BuildDealer(cardsCount);
-            BuildPlayersWithAnimals(dealer);
-
-            //Act
-            dealer.DealCards();
-
-            //Assert
-            CardsCountAssert(3, dealer);
-        }
-
+    
         #endregion
 
         #region  Build Methods
@@ -140,7 +140,7 @@ namespace ShuHaRi.EvolutionCardGameTests
             return playersRepositoryMock.Object;
         }
 
-        private ICardsRepository BuildCardsRepository(int cardsCount)
+        private ICardsDeck BuildCardsDeck(int cardsCount)
         {
             var cardsRepositoryMock = new Mock<ICardsRepository>();
             var cardsList = new List<Card>();
@@ -149,15 +149,20 @@ namespace ShuHaRi.EvolutionCardGameTests
 
             cardsRepositoryMock.Setup(c => c.GetCards()).Returns(cardsList);
 
-            return cardsRepositoryMock.Object;
+            ICardsDeck cardsDeck = this.CardsDeckFactory(cardsRepositoryMock.Object);
+
+            return cardsDeck;
+        }
+
+        private ICardsDeck CardsDeckFactory(ICardsRepository cardsRepository)
+        {
+            return new CardsDeck(cardsRepository);
         }
         
-        private Dealer BuildDealer(int cardsCount)
+        private Dealer BuildDealer()
         {
             var playersRepositoryMock = this.BuildPlayersRepository();
-            var cardsRepositoryMock = this.BuildCardsRepository(cardsCount);
-
-            var dealer = new Dealer(playersRepositoryMock, cardsRepositoryMock);
+            var dealer = new Dealer(playersRepositoryMock);
 
             return dealer;
         }
@@ -180,11 +185,16 @@ namespace ShuHaRi.EvolutionCardGameTests
 
         #region Assert Methods
 
-        private void CardsCountAssert(int expectedCards, Dealer dealer)
+        private void PlayersCardsCountAssert(int expectedPlayerCards, Dealer dealer)
         {
             var players = dealer.Players;
             foreach (var player in players)
-                Assert.AreEqual(expectedCards, player.Cards.Count);
+                Assert.AreEqual(expectedPlayerCards, player.Cards.Count);
+        }
+
+        private void CardsDeckCardsCountAssert(int expectedCardsCount, ICardsDeck cardsDeck)
+        {
+            Assert.AreEqual(expectedCardsCount, cardsDeck.CardsCount());
         }
 
         #endregion
